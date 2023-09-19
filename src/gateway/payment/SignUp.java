@@ -7,7 +7,7 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.sql.ResultSet;
 
 
 public class SignUp extends JFrame implements ActionListener {
@@ -16,7 +16,7 @@ public class SignUp extends JFrame implements ActionListener {
     JDateChooser dobField;
     JRadioButton male, female;
     JCheckBox savings, current, fd;
-    JButton loginBt, continueBt;
+    JButton loginBt, submitBt;
 
     SignUp() {
         setTitle("Application Form");
@@ -178,13 +178,13 @@ public class SignUp extends JFrame implements ActionListener {
         add(loginBt);
 
         //Continue button
-        continueBt = new JButton("Continue");
-        continueBt.setFont(new Font("Georgia", Font.PLAIN, 20));
-        continueBt.setForeground(Color.BLACK);
-        continueBt.setBackground(new Color(125, 215, 161));
-        continueBt.setBounds(470, 510, 130, 30);
-        continueBt.addActionListener(this);
-        add(continueBt);
+        submitBt = new JButton("Submit");
+        submitBt.setFont(new Font("Georgia", Font.PLAIN, 20));
+        submitBt.setForeground(Color.BLACK);
+        submitBt.setBackground(new Color(125, 215, 161));
+        submitBt.setBounds(470, 510, 130, 30);
+        submitBt.addActionListener(this);
+        add(submitBt);
 
         //Add background
         ImageIcon bgImgIcon = new ImageIcon(ClassLoader.getSystemResource("SignUpBg.jpg"));
@@ -228,35 +228,45 @@ public class SignUp extends JFrame implements ActionListener {
 
         //Data validation
         try {
-            if (nameField.getText().isEmpty() || ((JTextField)dobField.getDateEditor().getUiComponent()).getText().isEmpty() || phoneField.getText().isEmpty() || mailField.getText().isEmpty() || aadharField.getText().isEmpty() ){
-                JOptionPane.showMessageDialog(null,"Fill all the fields");
-            } else if (!male.isSelected() && !female.isSelected()) {
-                JOptionPane.showMessageDialog(null,"Please select your gender!");
-            }  else if (aadharField.getText().contains(" ")) {
-                JOptionPane.showMessageDialog(null,"Please enter aadhar no. without spaces!");
-            } else if (aadharField.getText().length() != 12 || !aadharField.getText().matches("[0-9]+")) {
-                JOptionPane.showMessageDialog(null,"Invalid aadhar no.!");
-            } else if (phoneField.getText().length() != 10 || !phoneField.getText().matches("[0-9]+")) {
-                JOptionPane.showMessageDialog(null,"Invalid phone no.!");
-            } else if (phoneField.getText().length() != 10 || !phoneField.getText().matches("[0-9]+")) {
-                JOptionPane.showMessageDialog(null,"Invalid phone no.!");
-            } else if (!savings.isSelected() && !current.isSelected() && !fd.isSelected()) {
-                JOptionPane.showMessageDialog(null, "Please choose atleast one type of account");
-            } else{
-                Connect c = new Connect();
-                String q = "insert into SignUpTable values('"+name+"','"+dob+"','"+gender+"','"+email+"','"+aadhar+"','"+phoneno+"','"+accountType+"')";
-                c.statement.executeUpdate(q);
-                new GenerateCardNo();
+            if (e.getSource() == submitBt) {
+                if (nameField.getText().isEmpty() || ((JTextField) dobField.getDateEditor().getUiComponent()).getText().isEmpty() || phoneField.getText().isEmpty() || mailField.getText().isEmpty() || aadharField.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Fill all the fields");
+                } else if (!male.isSelected() && !female.isSelected()) {
+                    JOptionPane.showMessageDialog(null, "Please select your gender!");
+                } else if (aadharField.getText().contains(" ")) {
+                    JOptionPane.showMessageDialog(null, "Please enter aadhar no. without spaces!");
+                } else if (aadharField.getText().length() != 12 || !aadharField.getText().matches("[0-9]+")) {
+                    JOptionPane.showMessageDialog(null, "Invalid aadhar no.!");
+                } else if (phoneField.getText().length() != 10 || !phoneField.getText().matches("[0-9]+")) {
+                    JOptionPane.showMessageDialog(null, "Invalid phone no.!");
+                } else if (phoneField.getText().length() != 10 || !phoneField.getText().matches("[0-9]+")) {
+                    JOptionPane.showMessageDialog(null, "Invalid phone no.!");
+                } else if (!savings.isSelected() && !current.isSelected() && !fd.isSelected()) {
+                    JOptionPane.showMessageDialog(null, "Please choose atleast one type of account");
+                } else {
+                    //Check for Existing Account
+                    Connect c = new Connect();
+                    String SQL = "SELECT * FROM SignUpTable WHERE Aadhar = '" + aadharField.getText() + "' ";
+                    ResultSet rs = c.statement.executeQuery(SQL);
+
+                    if (rs.next()) {
+                        JOptionPane.showMessageDialog(null, "Account already exists! Please Login.");
+                    } else {
+
+                        String q = "insert into SignUpTable values('" + name + "','" + dob + "','" + gender + "','" + email + "','" + aadhar + "','" + phoneno + "','" + accountType + "')";
+                        c.statement.executeUpdate(q);
+                        new GenerateCardNo();
+                        setVisible(false);
+                    }
+                }
+            } else if (e.getSource()==loginBt) {
+                new Login();
                 setVisible(false);
             }
-
         } catch(Exception E) {
             System.out.println("ERROR: "+E.getMessage());
         }
-
     }
-
-
 
     public static void main(String[] args) {
         new SignUp();
