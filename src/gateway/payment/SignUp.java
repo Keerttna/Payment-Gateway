@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
+
 public class SignUp extends JFrame implements ActionListener {
     
     JTextField nameField, mailField, aadharField, phoneField;
@@ -249,9 +250,10 @@ public class SignUp extends JFrame implements ActionListener {
                 setVisible(false);
             }
 
-        }catch(Exception E){
-            E.printStackTrace();
+        } catch(Exception E) {
+            System.out.println("ERROR: "+E.getMessage());
         }
+
     }
 
 
