@@ -233,7 +233,7 @@ public class SignUp extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(null,"Please select your gender!");
             }  else if (aadharField.getText().contains(" ")) {
                 JOptionPane.showMessageDialog(null,"Please enter aadhar no. without spaces!");
-            } else if (aadharField.getText().length() != 12 || !phoneField.getText().matches("[0-9]+")) {
+            } else if (aadharField.getText().length() != 12 || !aadharField.getText().matches("[0-9]+")) {
                 JOptionPane.showMessageDialog(null,"Invalid aadhar no.!");
             } else if (phoneField.getText().length() != 10 || !phoneField.getText().matches("[0-9]+")) {
                 JOptionPane.showMessageDialog(null,"Invalid phone no.!");
