@@ -12,8 +12,8 @@ public class Connect {
             statement = connection.createStatement();
 
 
-        } catch (Exception e){
-            e.printStackTrace();
+        } catch (Exception E){
+            System.out.println("ERROR: "+E.getMessage());
         }
     }
 }

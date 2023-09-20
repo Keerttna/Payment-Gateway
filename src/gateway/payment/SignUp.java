@@ -7,7 +7,8 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.ResultSet;
+import java.sql.*;
+
 
 
 public class SignUp extends JFrame implements ActionListener {
@@ -207,9 +208,11 @@ public class SignUp extends JFrame implements ActionListener {
         String email = mailField.getText();
         String aadhar = aadharField.getText();
         String phoneno = phoneField.getText();
-        String accountType = null;
+        String savingsAccount = null;
+        String currentAccount = null;
+        String fdAccount = null;
         String cardNo = null;
-        String pin = null;
+        int pin = 0;
 
 
 
@@ -221,13 +224,19 @@ public class SignUp extends JFrame implements ActionListener {
         }
 
         if(savings.isSelected()) {
-            accountType = "Savings";
+            savingsAccount = "Yes";
+        } else {
+            savingsAccount = "No";
         }
         if(current.isSelected()) {
-            accountType = "Current";
+            currentAccount = "Yes";
+        } else {
+            currentAccount = "No";
         }
         if(fd.isSelected()) {
-            accountType = "Fixed Deposit";
+            fdAccount = "Yes";
+        } else {
+            fdAccount = "No";
         }
 
         //Data validation
@@ -256,7 +265,11 @@ public class SignUp extends JFrame implements ActionListener {
                     if (rs.next()) {
                         JOptionPane.showMessageDialog(null, "Account already exists! Please Login.");
                     } else {
-                        String q = "insert into SignUpTable values('" + name + "','" + dob + "','" + gender + "','" + email + "','" + aadhar + "','" + phoneno + "','" + accountType + "','" + cardNo + "','" + pin + "')";
+                        GenerateCard object = new GenerateCard();
+                        cardNo = object.uniqueCardNumber();
+                        pin = object.pinNumber();
+
+                        String q = "insert into SignUpTable values('" + name + "','" + dob + "','" + gender + "','" + email + "','" + aadhar + "','" + phoneno + "','" + cardNo + "','" + pin + "','" + savingsAccount + "','" + currentAccount + "','" + fdAccount + "')";
                         c.statement.executeUpdate(q);
 
                     }
