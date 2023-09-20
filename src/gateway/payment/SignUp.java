@@ -208,6 +208,10 @@ public class SignUp extends JFrame implements ActionListener {
         String aadhar = aadharField.getText();
         String phoneno = phoneField.getText();
         String accountType = null;
+        String cardNo = null;
+        String pin = null;
+
+
 
 
         if(male.isSelected()) {
@@ -252,11 +256,9 @@ public class SignUp extends JFrame implements ActionListener {
                     if (rs.next()) {
                         JOptionPane.showMessageDialog(null, "Account already exists! Please Login.");
                     } else {
-
-                        String q = "insert into SignUpTable values('" + name + "','" + dob + "','" + gender + "','" + email + "','" + aadhar + "','" + phoneno + "','" + accountType + "')";
+                        String q = "insert into SignUpTable values('" + name + "','" + dob + "','" + gender + "','" + email + "','" + aadhar + "','" + phoneno + "','" + accountType + "','" + cardNo + "','" + pin + "')";
                         c.statement.executeUpdate(q);
-                        new GenerateCardNo();
-                        setVisible(false);
+
                     }
                 }
             } else if (e.getSource()==loginBt) {
