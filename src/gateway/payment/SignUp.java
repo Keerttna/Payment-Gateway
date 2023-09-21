@@ -272,6 +272,10 @@ public class SignUp extends JFrame implements ActionListener {
                         String q = "insert into SignUpTable values('" + name + "','" + dob + "','" + gender + "','" + email + "','" + aadhar + "','" + phoneno + "','" + cardNo + "','" + pin + "','" + savingsAccount + "','" + currentAccount + "','" + fdAccount + "')";
                         c.statement.executeUpdate(q);
 
+                        setVisible(false);
+
+                        object.displayCardDetails();
+
                     }
                 }
             } else if (e.getSource()==loginBt) {

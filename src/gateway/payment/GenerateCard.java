@@ -1,10 +1,11 @@
 package gateway.payment;
 
+import javax.swing.*;
 import java.sql.*;
 import java.util.Random;
 
-public class GenerateCard {
-    String uniqueCard = null;
+public class GenerateCard extends JFrame {
+    String uniqueCard = null, cardWithSpace = "";
     int pinForCard = 0;
     Connect c = new Connect();
     Random rand = new Random();
@@ -14,13 +15,22 @@ public class GenerateCard {
             uniqueCard = generateRandomCardNumber();
         } while (isCardNumberUnique());
 
-        return uniqueCard;
+        // Iterate through the string and add spaces after every 4 digits
+        for (int i = 0; i < uniqueCard.length(); i++) {
+            cardWithSpace += uniqueCard.charAt(i);
+            if ((i + 1) % 4 == 0 && i != uniqueCard.length() - 1) {
+                cardWithSpace += " "; // Add a space after every 4 digits (except the last group)
+            }
+        }
+
+
+        return cardWithSpace;
     }
 
     public int pinNumber() {
         //Generate pin
         Random rand = new Random();
-        pinForCard = rand.nextInt(10000);
+        pinForCard = rand.nextInt(1000,10000);
 
         return  pinForCard;
     }
@@ -43,9 +53,15 @@ public class GenerateCard {
         }
     }
 
+    public void displayCardDetails() {
+        JOptionPane.showMessageDialog(null,"Card No. : "+cardWithSpace+"\nPIN: "+pinForCard+"\nPlease note the credentials");
+    }
+
+
     public static void main(String[] args) throws SQLException {
         GenerateCard object = new GenerateCard();
         object.uniqueCardNumber();
+
 
     }
 
