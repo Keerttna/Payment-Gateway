@@ -7,11 +7,13 @@ import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 
 public class MainPage extends JFrame implements ActionListener {
-    String name;
+    String name, checkSaving, checkCurrent, checkFd;
     JButton okBt, updateBt;
     JRadioButton savingsBt, currentBt, fdButton;
+    String cardNo;
 
     MainPage(String cardNumber){
+        cardNo = cardNumber;
         setTitle("Main Page");
         setLayout(null);
         setSize(700,600);
@@ -102,6 +104,8 @@ public class MainPage extends JFrame implements ActionListener {
         updateBt.addActionListener(this);
         add(updateBt);
 
+
+
         //Add background
         ImageIcon bgImgIcon = new ImageIcon(ClassLoader.getSystemResource("MainPg.jpg"));
         Image scaledBgImg = bgImgIcon.getImage().getScaledInstance(700, 600, Image.SCALE_SMOOTH);
@@ -109,10 +113,6 @@ public class MainPage extends JFrame implements ActionListener {
         JLabel bgLabel = new JLabel(scaledBgIcon);
         bgLabel.setBounds(0, 0, 700, 600);
         add(bgLabel);
-
-
-
-
 
         setVisible(true);
     }
@@ -124,6 +124,80 @@ public class MainPage extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if(e.getSource()==okBt) {
+            //Check if user has the account type selected
+            try {
+                Connect c = new Connect();
+                if(savingsBt.isSelected()) {
+                    String SQL = "SELECT SavingsAccount FROM SignUpTable WHERE CardNo = '" + cardNo + "' ";
+                    ResultSet rs = c.statement.executeQuery(SQL);
+                    if(rs.next()) {
+                        checkSaving = rs.getString("SavingsAccount");
+                    }
+                    if(checkSaving.equals("Yes")) {
+
+                    } else {
+                        Object[] options = {"Yes", "No"};
+                        int selection = JOptionPane.showOptionDialog(null, "You do not have a Savings Account \n" +
+                                "Would you like to open one?", "Message", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                        if(selection==0) {
+                            String update = "UPDATE SignUpTable SET SavingsAccount = 'Yes' WHERE CardNo = '" + cardNo + "' ";
+                            c.statement.executeUpdate(update);
+
+                            JOptionPane.showMessageDialog(null,"You have successfully opened a Savings account");
+                        }
+                    }
+                }
+
+                else if(currentBt.isSelected()) {
+                    String SQL = "SELECT CurrentAccount FROM SignUpTable WHERE CardNo = '" + cardNo + "' ";
+                    ResultSet rs = c.statement.executeQuery(SQL);
+                    if (rs.next()) {
+                        checkCurrent = rs.getString("CurrentAccount");
+                    }
+                    if (checkCurrent.equals("Yes")) {
+                        //Open the corresponding class
+
+                    } else {
+                        Object[] options = {"Yes", "No"};
+                        int selection = JOptionPane.showOptionDialog(null, "You do not have a Current Account \n" +
+                                "Would you like to open one?", "Message", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                        if(selection==0) {
+                            String update = "UPDATE SignUpTable SET CurrentAccount = 'Yes' WHERE CardNo = '" + cardNo + "' ";
+                            c.statement.executeUpdate(update);
+
+                            JOptionPane.showMessageDialog(null, "You have successfully opened a Current account");
+                        }
+                    }
+                }
+
+                else {
+                    String SQL = "SELECT fdAccount FROM SignUpTable WHERE CardNo = '" + cardNo + "' ";
+                    ResultSet rs = c.statement.executeQuery(SQL);
+                    if (rs.next()) {
+                        checkFd = rs.getString("fdAccount");
+                    }
+                    if (checkFd.equals("Yes")) {
+
+                    } else {
+                        Object[] options = {"Yes", "No"};
+                        int selection = JOptionPane.showOptionDialog(null, "You do not have a FD Account \n" +
+                                "Would you like to open one?", "Message", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                        if(selection==0) {
+                            String update = "UPDATE SignUpTable SET fdAccount = 'Yes' WHERE CardNo = '" + cardNo + "' ";
+                            c.statement.executeUpdate(update);
+
+                            JOptionPane.showMessageDialog(null, "You have successfully opened a Fixed Deposit");
+                        }
+                    }
+
+                }
+
+            } catch(Exception E) {
+                System.out.println("ERROR: "+E.getMessage());
+            }
+
+        }
 
     }
 }

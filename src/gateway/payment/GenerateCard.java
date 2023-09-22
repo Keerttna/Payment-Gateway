@@ -22,8 +22,6 @@ public class GenerateCard extends JFrame {
                 cardWithSpace += " "; // Add a space after every 4 digits (except the last group)
             }
         }
-
-
         return cardWithSpace;
     }
 
@@ -56,7 +54,6 @@ public class GenerateCard extends JFrame {
     public void displayCardDetails() {
         JOptionPane.showMessageDialog(null,"Card No. : "+cardWithSpace+"\nPIN: "+pinForCard+"\nPlease note the credentials");
     }
-
 
     public static void main(String[] args) throws SQLException {
         GenerateCard object = new GenerateCard();
