@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.*;
 
 public class Login extends JFrame implements ActionListener {
     JLabel welcome,cardNo,pin;
@@ -93,6 +94,33 @@ public class Login extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         try {
             if(e.getSource()==login) {
+
+                //Check if the card and pin are valid
+                try {
+                    Connect c = new Connect();
+                    String checkCard = "SELECT * FROM SignUpTable WHERE CardNo = '" + cardField.getText() + "' ";
+                    ResultSet checkCardRs = c.statement.executeQuery(checkCard);
+
+                    if(checkCardRs.next()) {
+                        String checkPin = "SELECT PIN FROM SignUpTable WHERE CardNo = '" + cardField.getText() + "' ";
+                        ResultSet checkPinRs = c.statement.executeQuery(checkPin);
+
+                        if(checkPinRs.next()) {
+                            String pinFromDB = checkPinRs.getString("PIN");
+
+                            if(pinFromDB.equals(pinField.getText())) {
+                                new MainPage(cardField.getText());
+                                setVisible(false);
+                            } else {
+                                JOptionPane.showMessageDialog(null,"Incorrect PIN!");
+                            }
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null,"Invalid card number!");
+                    }
+                } catch (Exception E) {
+                    System.out.println("ERROR: "+E.getMessage());
+                }
 
             } else if(e.getSource()== clear) {
                 cardField.setText("");

@@ -9,8 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
 
-
-
 public class SignUp extends JFrame implements ActionListener {
     
     JTextField nameField, mailField, aadharField, phoneField;
@@ -20,7 +18,7 @@ public class SignUp extends JFrame implements ActionListener {
     JButton loginBt, submitBt;
 
     SignUp() {
-        setTitle("Application Form");
+        setTitle("Payment Gateway");
         setLayout(null);
         setSize(700,600);
         setLocationRelativeTo(null);
@@ -214,9 +212,6 @@ public class SignUp extends JFrame implements ActionListener {
         String cardNo = null;
         int pin = 0;
 
-
-
-
         if(male.isSelected()) {
             gender = "Male";
         } else if(female.isSelected()){
@@ -276,6 +271,9 @@ public class SignUp extends JFrame implements ActionListener {
 
                         object.displayCardDetails();
 
+                        //Open Login page
+                        new Login();
+
                     }
                 }
             } else if (e.getSource()==loginBt) {
@@ -291,6 +289,5 @@ public class SignUp extends JFrame implements ActionListener {
         new SignUp();
 
     }
-
 
 }
