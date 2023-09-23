@@ -11,6 +11,7 @@ public class MainPage extends JFrame implements ActionListener {
     JButton okBt, updateBt;
     JRadioButton savingsBt, currentBt, fdButton;
     String cardNo;
+    Connect c = new Connect();
 
     MainPage(String cardNumber){
         cardNo = cardNumber;
@@ -127,7 +128,7 @@ public class MainPage extends JFrame implements ActionListener {
         if(e.getSource()==okBt) {
             //Check if user has the account type selected
             try {
-                Connect c = new Connect();
+
                 if(savingsBt.isSelected()) {
                     String SQL = "SELECT SavingsAccount FROM SignUpTable WHERE CardNo = '" + cardNo + "' ";
                     ResultSet rs = c.statement.executeQuery(SQL);
@@ -197,6 +198,20 @@ public class MainPage extends JFrame implements ActionListener {
                 System.out.println("ERROR: "+E.getMessage());
             }
 
+        } else {
+            //Updating PIN
+            try {
+                Object[] options = {"Yes", "No"};
+                int selection = JOptionPane.showOptionDialog(null, "Are you sure you want to update the PIN ?", "Confirmation", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[1]);
+
+                if(selection==0) {
+                    setVisible(false);
+                    new UpdatePin(cardNo);
+                }
+
+            } catch (Exception E) {
+                System.out.println("ERROR: "+E.getMessage());
+            }
         }
 
     }
