@@ -136,6 +136,8 @@ public class MainPage extends JFrame implements ActionListener {
                         checkSaving = rs.getString("SavingsAccount");
                     }
                     if(checkSaving.equals("Yes")) {
+                        new Savings(cardNo);
+                        setVisible(false);
 
                     } else {
                         Object[] options = {"Yes", "No"};
