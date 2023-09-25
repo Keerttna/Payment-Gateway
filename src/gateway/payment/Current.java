@@ -16,7 +16,7 @@ public class Current extends JFrame implements ActionListener{
 
     Current(String cardNumber){
             cardNo = cardNumber;
-            setTitle("Current Account Page");
+            setTitle("Current Account");
             setLayout(null);
             setSize(700,600);
             setLocationRelativeTo(null);

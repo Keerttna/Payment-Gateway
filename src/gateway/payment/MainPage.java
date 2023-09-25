@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 
 public class MainPage extends JFrame implements ActionListener {
     String name, checkSaving, checkCurrent, checkFd;
-    JButton okBt, updateBt;
+    JButton okBt, updateBt, loginPgBt;
     JRadioButton savingsBt, currentBt, fdButton;
     String cardNo;
     Connect c = new Connect();
@@ -104,6 +104,14 @@ public class MainPage extends JFrame implements ActionListener {
         updateBt.setBounds(380, 470, 150, 30);
         updateBt.addActionListener(this);
         add(updateBt);
+
+        loginPgBt = new JButton("Back");
+        loginPgBt.setFont(new Font("Georgia", Font.PLAIN, 20));
+        loginPgBt.setForeground(Color.WHITE);
+        loginPgBt.setBackground(new Color(100,149,237));
+        loginPgBt.setBounds(50, 500, 130, 30);
+        loginPgBt.addActionListener(this);
+        add(loginPgBt);
 
 
 
@@ -202,7 +210,7 @@ public class MainPage extends JFrame implements ActionListener {
                 System.out.println("ERROR: "+E.getMessage());
             }
 
-        } else {
+        } else if(updateBt.isSelected()){
             //Updating PIN
             try {
                 Object[] options = {"Yes", "No"};
@@ -216,6 +224,9 @@ public class MainPage extends JFrame implements ActionListener {
             } catch (Exception E) {
                 System.out.println("ERROR: "+E.getMessage());
             }
+        } else {
+            new Login();
+            setVisible(false);
         }
 
     }

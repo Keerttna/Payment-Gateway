@@ -16,7 +16,7 @@ public class Savings extends JFrame implements ActionListener {
     JButton depositBt,withdrawBt,transferBt,miniStatementBt, mainPgBt;
     Savings(String cardNumber){
         cardNo = cardNumber;
-        setTitle("Savings Page");
+        setTitle("Savings Account");
         setLayout(null);
         setSize(700,600);
         setLocationRelativeTo(null);
