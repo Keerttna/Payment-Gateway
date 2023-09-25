@@ -160,6 +160,8 @@ public class MainPage extends JFrame implements ActionListener {
                     }
                     if (checkCurrent.equals("Yes")) {
                         //Open the corresponding class
+                        new Current(cardNo);
+                        setVisible(false);
 
                     } else {
                         Object[] options = {"Yes", "No"};
