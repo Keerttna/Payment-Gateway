@@ -12,6 +12,7 @@ import java.util.Date;
 public class Savings extends JFrame implements ActionListener {
     Connect c = new Connect();
     String cardNo,name;
+    String accountType = "Savings";
     Double balance = 0.00;
     JButton depositBt,withdrawBt,transferBt,miniStatementBt, mainPgBt;
     Savings(String cardNumber){
@@ -80,7 +81,7 @@ public class Savings extends JFrame implements ActionListener {
         add(displayTime);
 
         //Max Transaction
-        JLabel maxTransaction = new JLabel("Maximum Transaction Limit for a day : Rs.50,000");
+        JLabel maxTransaction = new JLabel("Maximum Withdrawal Limit a day: Rs.20,000");
         maxTransaction.setForeground(Color.BLACK);
         maxTransaction.setFont(new Font("Garamond", Font.BOLD, 18));
         maxTransaction.setBounds(50, 160, 600, 40);
@@ -92,6 +93,18 @@ public class Savings extends JFrame implements ActionListener {
         displayBalance.setFont(new Font("Garamond", Font.BOLD, 18));
         displayBalance.setBounds(50, 200, 80, 40);
         add(displayBalance);
+
+        try {
+            String SQL = "SELECT SavingsBalance FROM SignUpTable WHERE CardNo = '" + cardNo + "' ";
+            ResultSet rs = c.statement.executeQuery(SQL);
+            if(rs.next()) {
+                balance = Double.valueOf(rs.getString("SavingsBalance"));
+            }
+
+        } catch (Exception E) {
+            System.out.println("ERROR: "+E.getMessage());
+        }
+
 
         JLabel balanceField = new JLabel("  Rs. "+balance);
         balanceField.setBackground(Color.WHITE);
@@ -187,6 +200,9 @@ public class Savings extends JFrame implements ActionListener {
         try {
             if(e.getSource() == mainPgBt) {
                 new MainPage(cardNo);
+                setVisible(false);
+            } else if(e.getSource() == depositBt) {
+                new Deposit(cardNo, accountType);
                 setVisible(false);
             }
 
