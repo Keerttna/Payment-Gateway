@@ -204,6 +204,9 @@ public class Savings extends JFrame implements ActionListener {
             } else if(e.getSource() == depositBt) {
                 new Deposit(cardNo, accountType);
                 setVisible(false);
+            } else if(e.getSource() == withdrawBt) {
+                new Withdraw(cardNo, accountType);
+                setVisible(false);
             }
 
         } catch(Exception E) {

@@ -8,17 +8,16 @@ import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-public class Deposit extends JFrame implements ActionListener {
+public class Withdraw extends JFrame implements ActionListener{
     Connect c = new Connect();
     String cardNo,name,account;
-    JTextField depositField;
-    JButton submitBt,savingsPgBt;
-    Deposit( String cardNumber,String accountType){
+    JTextField withdrawField;
+    JButton submitBt,backBt;
+    Withdraw( String cardNumber,String accountType){
 
         cardNo = cardNumber;
         account = accountType;
-        setTitle("Deposit");
+        setTitle("Withdraw");
         setLayout(null);
         setSize(600,400);
         setLocationRelativeTo(null);
@@ -34,7 +33,6 @@ public class Deposit extends JFrame implements ActionListener {
         } catch(Exception E) {
             System.out.println("ERROR: "+E.getMessage());
         }
-
 
         JLabel cardHolder = new JLabel("Name: "+name);
         cardHolder.setForeground(Color.WHITE);
@@ -53,12 +51,12 @@ public class Deposit extends JFrame implements ActionListener {
         displayCardNo.setBounds(30, 60, 500, 40);
         add(displayCardNo);
 
-        //Deposit Column
-        JLabel deposit = new JLabel("Enter the amount to be deposited:");
-        deposit.setForeground(Color.WHITE);
-        deposit.setFont(new Font("Garamond", Font.BOLD, 22));
-        deposit.setBounds(30, 110, 600, 40);
-        add(deposit);
+        //Withdraw Column
+        JLabel withdraw = new JLabel("Enter the amount to withdraw:");
+        withdraw.setForeground(Color.WHITE);
+        withdraw.setFont(new Font("Garamond", Font.BOLD, 22));
+        withdraw.setBounds(30, 110, 600, 40);
+        add(withdraw);
 
         JLabel Rs = new JLabel("Rs.");
         Rs.setBackground(Color.WHITE);
@@ -69,13 +67,13 @@ public class Deposit extends JFrame implements ActionListener {
         Rs.setBounds(30,170,40,31);
         add(Rs);
 
-        depositField = new JTextField(15);
-        depositField.setBounds(70, 170, 250, 30);
-        depositField.setFont(new Font("Georgia", Font.PLAIN, 20));
-        add(depositField);
+        withdrawField = new JTextField(15);
+        withdrawField.setBounds(70, 170, 250, 30);
+        withdrawField.setFont(new Font("Georgia", Font.PLAIN, 20));
+        add(withdrawField);
 
         //Submit Button
-        submitBt = new JButton("Deposit");
+        submitBt = new JButton("Withdraw");
         submitBt.setFont(new Font("Georgia", Font.PLAIN, 20));
         submitBt.setForeground(Color.BLACK);
         submitBt.setBackground(new Color(125, 215, 161));
@@ -84,13 +82,13 @@ public class Deposit extends JFrame implements ActionListener {
         add(submitBt);
 
         //Back Button
-        savingsPgBt = new JButton("Back");
-        savingsPgBt.setFont(new Font("Georgia", Font.PLAIN, 20));
-        savingsPgBt.setForeground(Color.WHITE);
-        savingsPgBt.setBackground(new Color(100,149,237));
-        savingsPgBt.setBounds(100, 305, 150, 30);
-        savingsPgBt.addActionListener(this);
-        add(savingsPgBt);
+        backBt = new JButton("Back");
+        backBt.setFont(new Font("Georgia", Font.PLAIN, 20));
+        backBt.setForeground(Color.WHITE);
+        backBt.setBackground(new Color(100,149,237));
+        backBt.setBounds(100, 305, 150, 30);
+        backBt.addActionListener(this);
+        add(backBt);
 
         //Add background
         ImageIcon bgImgIcon = new ImageIcon(ClassLoader.getSystemResource("DepositBg.jpg"));
@@ -127,16 +125,28 @@ public class Deposit extends JFrame implements ActionListener {
 
             Double balance = rsBalance;
 
-            if(e.getSource() == savingsPgBt) {
-                new Savings(cardNo);
-                setVisible(false);
-            } else {
-                if(!depositField.getText().matches("[0-9]+") || Double.valueOf(depositField.getText()) <= 0) {
-                    JOptionPane.showMessageDialog(null,"Invalid amount!");
-                } else {
-                    Double amount = Double.valueOf(depositField.getText());
+            if(e.getSource() == backBt) {
+                if(account.equals("Savings")) {
+                    new Savings(cardNo);
+                    setVisible(false);
+                } else if(account.equals("Current")) {
+                    new Current(cardNo);
+                    setVisible(false);
+                }
 
-                    //Date and Time
+            } else if(e.getSource()== submitBt) {
+                if(!withdrawField.getText().matches("[0-9]+") || Double.valueOf(withdrawField.getText()) <= 0) {
+                    JOptionPane.showMessageDialog(null,"Invalid amount!");
+                } else if(Double.valueOf(withdrawField.getText()) > balance) {
+                    JOptionPane.showMessageDialog(null, "Invalid amount!\n" +
+                            "Amount is higher than account balance");
+                } else if(whichBalance.equals("SavingsBalance") && balance>20000) {
+                    JOptionPane.showMessageDialog(null,"Cannot withdraw more than 20,000 in a single transaction in Savings Account");
+                } else {
+
+                    Double amount = Double.valueOf(withdrawField.getText());
+
+                    //Date & Time
                     SimpleDateFormat formatDate = new SimpleDateFormat("dd-MM-yyyy");
                     Date date = new Date();
 
@@ -144,22 +154,23 @@ public class Deposit extends JFrame implements ActionListener {
                     Date time = new Date();
 
                     //Enter details in Transaction table
-                    String q = "insert into Transactions values('" + cardNo + "','" + account + "','" + "Deposit" + "','" + amount + "','" + formatDate.format(date) + "','" + formatTime.format(time) + "')";
+                    String q = "insert into Transactions values('" + cardNo + "','" + account + "','" + "Withdraw" + "','" + amount + "','" + formatDate.format(date) + "','" + formatTime.format(time) + "')";
                     c.statement.executeUpdate(q);
 
                     //Update balance in signUpTable
-
-                    //Update balance in signUpTable
-                    String update = "UPDATE SignUpTable SET " + whichBalance + " = '" + (balance + amount) + "' WHERE CardNo = '" + cardNo + "'";
+                    String update = "UPDATE SignUpTable SET " + whichBalance + " = '" + (balance - amount) + "' WHERE CardNo = '" + cardNo + "'";
                     c.statement.executeUpdate(update);
 
-                    JOptionPane.showMessageDialog(null, "You have successfully deposited the amount");
+                    JOptionPane.showMessageDialog(null, "You have successfully withdrawn the amount");
+
+                    setVisible(false);
 
                     if(account.equals("Savings")) {
                         new Savings(cardNo);
                     } else if(account.equals("Current")) {
                         new Current(cardNo);
                     }
+
                 }
 
             }
