@@ -184,7 +184,7 @@ public class MainPage extends JFrame implements ActionListener {
                     }
                 }
 
-                else {
+                else if(fdButton.isSelected()){
                     String SQL = "SELECT fdAccount FROM SignUpTable WHERE CardNo = '" + cardNo + "' ";
                     ResultSet rs = c.statement.executeQuery(SQL);
                     if (rs.next()) {
@@ -210,7 +210,7 @@ public class MainPage extends JFrame implements ActionListener {
                 System.out.println("ERROR: "+E.getMessage());
             }
 
-        } else if(updateBt.isSelected()){
+        } else if(e.getSource()==updateBt){
             //Updating PIN
             try {
                 Object[] options = {"Yes", "No"};

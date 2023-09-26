@@ -210,6 +210,7 @@ public class SignUp extends JFrame implements ActionListener {
         String currentAccount = null;
         String fdAccount = null;
         String cardNo = null;
+        Double savingsBalance = 0.00, currentBalance = 0.00, fdBalance = 0.00;
         int pin = 0;
 
         if(male.isSelected()) {
@@ -264,7 +265,7 @@ public class SignUp extends JFrame implements ActionListener {
                         cardNo = object.uniqueCardNumber();
                         pin = object.pinNumber();
 
-                        String q = "insert into SignUpTable values('" + name + "','" + dob + "','" + gender + "','" + email + "','" + aadhar + "','" + phoneno + "','" + cardNo + "','" + pin + "','" + savingsAccount + "','" + currentAccount + "','" + fdAccount + "')";
+                        String q = "insert into SignUpTable values('" + name + "','" + dob + "','" + gender + "','" + email + "','" + aadhar + "','" + phoneno + "','" + cardNo + "','" + pin + "','" + savingsAccount + "','" + currentAccount + "','" + fdAccount + "','" + savingsBalance + "','" + currentBalance+ "','" + fdBalance + "')";
                         c.statement.executeUpdate(q);
 
                         setVisible(false);
