@@ -140,7 +140,7 @@ public class Withdraw extends JFrame implements ActionListener{
                 } else if(Double.valueOf(withdrawField.getText()) > balance) {
                     JOptionPane.showMessageDialog(null, "Invalid amount!\n" +
                             "Amount is higher than account balance");
-                } else if(whichBalance.equals("SavingsBalance") && balance>20000) {
+                } else if(whichBalance.equals("SavingsBalance") && Double.valueOf(withdrawField.getText())>20000) {
                     JOptionPane.showMessageDialog(null,"Cannot withdraw more than 20,000 in a single transaction in Savings Account");
                 } else {
 

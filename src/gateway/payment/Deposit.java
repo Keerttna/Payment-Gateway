@@ -13,7 +13,7 @@ public class Deposit extends JFrame implements ActionListener {
     Connect c = new Connect();
     String cardNo,name,account;
     JTextField depositField;
-    JButton submitBt,savingsPgBt;
+    JButton submitBt, backBt;
     Deposit( String cardNumber,String accountType){
 
         cardNo = cardNumber;
@@ -84,13 +84,13 @@ public class Deposit extends JFrame implements ActionListener {
         add(submitBt);
 
         //Back Button
-        savingsPgBt = new JButton("Back");
-        savingsPgBt.setFont(new Font("Georgia", Font.PLAIN, 20));
-        savingsPgBt.setForeground(Color.WHITE);
-        savingsPgBt.setBackground(new Color(100,149,237));
-        savingsPgBt.setBounds(100, 305, 150, 30);
-        savingsPgBt.addActionListener(this);
-        add(savingsPgBt);
+        backBt = new JButton("Back");
+        backBt.setFont(new Font("Georgia", Font.PLAIN, 20));
+        backBt.setForeground(Color.WHITE);
+        backBt.setBackground(new Color(100,149,237));
+        backBt.setBounds(100, 305, 150, 30);
+        backBt.addActionListener(this);
+        add(backBt);
 
         //Add background
         ImageIcon bgImgIcon = new ImageIcon(ClassLoader.getSystemResource("DepositBg.jpg"));
@@ -127,8 +127,12 @@ public class Deposit extends JFrame implements ActionListener {
 
             Double balance = rsBalance;
 
-            if(e.getSource() == savingsPgBt) {
-                new Savings(cardNo);
+            if(e.getSource() == backBt) {
+                if(account.equals("Savings")) {
+                    new Savings(cardNo);
+                } else if(account.equals("Current")) {
+                    new Current(cardNo);
+                }
                 setVisible(false);
             } else {
                 if(!depositField.getText().matches("[0-9]+") || Double.valueOf(depositField.getText()) <= 0) {

@@ -81,7 +81,7 @@ public class Savings extends JFrame implements ActionListener {
         add(displayTime);
 
         //Max Transaction
-        JLabel maxTransaction = new JLabel("Maximum Withdrawal Limit a day: Rs.20,000");
+        JLabel maxTransaction = new JLabel("Maximum Withdrawal Limit in a single transaction: Rs.20,000");
         maxTransaction.setForeground(Color.BLACK);
         maxTransaction.setFont(new Font("Garamond", Font.BOLD, 18));
         maxTransaction.setBounds(50, 160, 600, 40);
@@ -206,6 +206,9 @@ public class Savings extends JFrame implements ActionListener {
                 setVisible(false);
             } else if(e.getSource() == withdrawBt) {
                 new Withdraw(cardNo, accountType);
+                setVisible(false);
+            } else if(e.getSource()==transferBt){
+                new Transfer(cardNo,accountType);
                 setVisible(false);
             }
 
