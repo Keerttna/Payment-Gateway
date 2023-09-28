@@ -8,7 +8,7 @@ The "Payment Gateway" is a comprehensive and user-friendly software application 
 
 2. User Authentication: Existing users can log in securely by verifying their credentials. The system ensures that only authorized users gain access to their accounts and perform transactions.
 
-3. Account Management: Users can open both Savings and Fixed Deposit accounts, providing them with flexible options to manage their finances. Account details such as account type, balance are stored in the User database.
+3. Account Management: Users can open both Savings and Fixed Deposit accounts, providing them with flexible options to manage their finances. Account details such as account type, balance and transaction types are stored in the User database.
 
 4. Money Deposit and Withdrawal: The system allows users to deposit and withdraw funds from their accounts, effectively updating the account balances in the database. This feature ensures that users can conveniently manage their money.
 
