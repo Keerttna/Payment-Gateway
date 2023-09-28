@@ -12,6 +12,7 @@ public class Login extends JFrame implements ActionListener {
     JPasswordField pinField;
     JButton login, signup, clear;
     Login() {
+        //Login
 
         setTitle("Payment Gateway");
         setLayout(null);
