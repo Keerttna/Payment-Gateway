@@ -112,7 +112,7 @@ public class Deposit extends JFrame implements ActionListener {
         try{
             Double rsBalance = 0.00;
 
-            String whichBalance = "SavingsBalance";
+            String whichBalance = "";
             if (account.equals("Savings")) {
                 whichBalance = "SavingsBalance";
             } else if(account.equals("Current")) {

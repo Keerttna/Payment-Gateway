@@ -210,6 +210,8 @@ public class Savings extends JFrame implements ActionListener {
             } else if(e.getSource()==transferBt){
                 new Transfer(cardNo,accountType);
                 setVisible(false);
+            } else {
+                new MiniStatement(accountType, cardNo);
             }
 
         } catch(Exception E) {
